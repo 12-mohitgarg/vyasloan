@@ -133,22 +133,20 @@ export default function ApplyPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 pt-20 pb-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="text-center mb-8 pt-6">
-          <h1 className="text-3xl font-extrabold text-[#0f2844] mb-2">Apply for Personal Loan</h1>
-          <p className="text-gray-500">Quick approval · Minimal documents · Best rates</p>
+        <div className="text-center mb-6 sm:mb-8 pt-5 sm:pt-6">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f2844] mb-2">Apply for Personal Loan</h1>
+          <p className="text-sm sm:text-base text-gray-500">Quick approval · Minimal documents · Best rates</p>
         </div>
 
-        {/* Two-column layout: form left, calculator right */}
-        <div className="flex flex-col xl:flex-row gap-6 items-start">
+        <div className="w-full max-w-7xl mx-auto space-y-5 sm:space-y-6">
 
-          {/* Left: Form */}
-          <div className="flex-1 min-w-0">
+          <SidebarCalculator calcState={calcState} setCalcState={setCalcState} emiMonthly={emiMonthly} />
 
         {/* Step Progress */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
             {stepTitles.map((s, i) => {
               const n = i + 1
@@ -157,8 +155,8 @@ export default function ApplyPage() {
               const done = step > n
               return (
                 <div key={n} className="flex flex-col items-center flex-1">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-all ${done ? 'bg-teal-500 text-white' : active ? 'bg-[#0f2844] text-white' : 'bg-gray-100 text-gray-400'}`}>
-                    {done ? <CheckCircle size={18} /> : <Icon size={18} />}
+                  <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mb-1.5 transition-all ${done ? 'bg-teal-500 text-white' : active ? 'bg-[#0f2844] text-white' : 'bg-gray-100 text-gray-400'}`}>
+                    {done ? <CheckCircle size={16} /> : <Icon size={16} />}
                   </div>
                   <span className={`text-xs font-medium hidden sm:block ${active ? 'text-[#0f2844]' : done ? 'text-teal-600' : 'text-gray-400'}`}>
                     {s.label}
@@ -178,7 +176,7 @@ export default function ApplyPage() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 lg:p-8">
 
           {/* Step 1: Personal Info */}
           {step === 1 && (
@@ -219,7 +217,7 @@ export default function ApplyPage() {
           {/* Step 2: Employment */}
           {step === 2 && (
             <FormStep title="Employment Details" subtitle="Your work and loan information">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
                 <Field label="Employment Type *" error={errors.employmentType?.message}>
                   <select {...register('employmentType', { required: 'Select employment type' })} className="input-field">
                     <option value="">Select type</option>
@@ -249,7 +247,7 @@ export default function ApplyPage() {
                     {['< 1 year', '1-2 years', '2-5 years', '5+ years'].map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
                 </Field>
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 xl:col-span-3">
                   <Field label="Company Address *" error={errors.companyAddress?.message}>
                     <textarea {...register('companyAddress', { required: 'Company address is required' })}
                       placeholder="Full company address"
@@ -305,9 +303,9 @@ export default function ApplyPage() {
           {/* Step 4: References */}
           {step === 4 && (
             <FormStep title="Two References" subtitle="Provide 2 personal or professional references">
-              <div className="space-y-6">
+              <div className="space-y-5 sm:space-y-6">
                 {[1, 2].map(n => (
-                  <div key={n} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                  <div key={n} className="bg-gray-50 rounded-xl p-4 sm:p-5 border border-gray-100">
                     <h4 className="font-semibold text-[#0f2844] mb-4 flex items-center gap-2">
                       <div className="w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center text-white text-xs font-bold">{n}</div>
                       Reference {n}
@@ -338,12 +336,12 @@ export default function ApplyPage() {
               <ReviewSection data={{ ...allData, ...getValues() }} />
 
               {/* EMI Calculator Summary Card */}
-              <div className="mt-5 bg-gradient-to-br from-[#0f2844] to-[#1e3a5f] rounded-xl p-5 text-white">
+              <div className="mt-5 bg-gradient-to-br from-[#0f2844] to-[#1e3a5f] rounded-xl p-4 sm:p-5 text-white">
                 <div className="flex items-center gap-2 font-bold text-sm mb-4">
                   <Calculator size={16} className="text-teal-400" />
                   EMI Calculator Summary (will be sent to admin)
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 min-[420px]:grid-cols-2 sm:grid-cols-3 gap-3">
                   {[
                     ['Loan Amount', `₹${fmtINR(calcState.amount)}`],
                     ['Tenure', `${calcState.tenure} months`],
@@ -372,11 +370,11 @@ export default function ApplyPage() {
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 mt-8 pt-6 border-t border-gray-100">
             <button
               onClick={handleBack}
               disabled={step === 1}
-              className="flex items-center gap-2 px-6 py-3 border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronLeft size={18} /> Back
             </button>
@@ -384,7 +382,7 @@ export default function ApplyPage() {
             {step < TOTAL_STEPS ? (
               <button
                 onClick={handleNext}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-teal-500/30"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-md hover:shadow-teal-500/30"
               >
                 Next <ChevronRight size={18} />
               </button>
@@ -392,7 +390,7 @@ export default function ApplyPage() {
               <button
                 onClick={handleFinalSubmit}
                 disabled={submitting}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? (
                   <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Submitting...</>
@@ -403,17 +401,7 @@ export default function ApplyPage() {
             )}
           </div>
         </div>
-
-          </div>{/* end left column */}
-
-          {/* Right: Sticky EMI Calculator */}
-          <div className="w-full xl:w-80 shrink-0">
-            <div className="sticky top-24">
-              <SidebarCalculator calcState={calcState} setCalcState={setCalcState} emiMonthly={emiMonthly} />
-            </div>
-          </div>
-
-        </div>{/* end two-column flex */}
+        </div>
       </div>
     </main>
   )
@@ -443,15 +431,15 @@ function Field({ label, error, children }) {
 
 function FileUploadField({ label, note, accept, file, onChange }) {
   return (
-    <div className="border-2 border-dashed border-gray-200 rounded-xl p-5 hover:border-teal-300 transition-colors">
-      <div className="flex items-center justify-between">
-        <div>
+    <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 sm:p-5 hover:border-teal-300 transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="min-w-0">
           <p className="font-semibold text-gray-700 text-sm">{label}</p>
           <p className="text-gray-400 text-xs mt-0.5">{note}</p>
         </div>
         <label className="cursor-pointer">
           <input type="file" accept={accept} onChange={onChange} className="hidden" />
-          <div className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${file ? 'bg-teal-100 text-teal-700' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}`}>
+          <div className={`w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${file ? 'bg-teal-100 text-teal-700' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}`}>
             <Upload size={14} />
             {file ? file.name.substring(0, 20) + (file.name.length > 20 ? '...' : '') : 'Choose File'}
           </div>
@@ -551,7 +539,7 @@ function fmt(n) {
 }
 
 function SidebarCalculator({ calcState, setCalcState, emiMonthly }) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const { amount, tenure, rate } = calcState
 
   const set = (key) => (e) => setCalcState(prev => ({ ...prev, [key]: +e.target.value }))
@@ -561,24 +549,24 @@ function SidebarCalculator({ calcState, setCalcState, emiMonthly }) {
   const principalPct = Math.round((amount / totalPayable) * 100)
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header toggle */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between px-5 py-4 bg-gradient-to-r from-[#0f2844] to-[#1e3a5f] text-white"
+        className="w-full flex items-center justify-between gap-3 px-4 sm:px-5 py-4 bg-gradient-to-r from-[#0f2844] to-[#1e3a5f] text-white"
       >
-        <div className="flex items-center gap-2 font-bold text-base">
+        <div className="flex items-center gap-2 font-bold text-sm sm:text-base min-w-0">
           <Calculator size={18} className="text-teal-400" />
           EMI Calculator
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs bg-teal-500/30 text-teal-300 px-2 py-0.5 rounded-full font-medium">Saved to application</span>
+        <div className="flex items-center justify-end gap-2 min-w-0">
+          <span className="hidden min-[420px]:inline text-xs bg-teal-500/30 text-teal-300 px-2 py-0.5 rounded-full font-medium">Saved to application</span>
           <span className="text-teal-300 text-xl leading-none">{open ? '−' : '+'}</span>
         </div>
       </button>
 
       {open && (
-        <div className="p-5 space-y-5">
+        <div className="p-4 sm:p-5 space-y-5">
 
           {/* EMI result */}
           <div className="bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl p-4 text-center text-white">
@@ -588,7 +576,7 @@ function SidebarCalculator({ calcState, setCalcState, emiMonthly }) {
           </div>
 
           {/* Sliders */}
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div>
               <div className="flex justify-between text-xs mb-1.5">
                 <span className="font-semibold text-gray-600">Loan Amount</span>
@@ -630,42 +618,44 @@ function SidebarCalculator({ calcState, setCalcState, emiMonthly }) {
           </div>
 
           {/* Donut visual */}
-          <div className="flex items-center gap-4">
-            <svg viewBox="0 0 36 36" className="w-20 h-20 shrink-0 -rotate-90">
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e2e8f0" strokeWidth="4" />
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0d9488" strokeWidth="4"
-                strokeDasharray={`${principalPct} ${100 - principalPct}`} strokeLinecap="round" />
-              <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" strokeWidth="4"
-                strokeDasharray={`${100 - principalPct} ${principalPct}`}
-                strokeDashoffset={`-${principalPct}`} strokeLinecap="round" />
-            </svg>
-            <div className="space-y-2 text-xs flex-1">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-teal-500" /><span className="text-gray-500">Principal</span></div>
-                <span className="font-bold text-gray-700">₹{fmt(amount)}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-400" /><span className="text-gray-500">Interest</span></div>
-                <span className="font-bold text-gray-700">₹{fmt(totalInterest)}</span>
-              </div>
-              <div className="border-t border-gray-100 pt-2 flex items-center justify-between">
-                <span className="text-gray-500">Total</span>
-                <span className="font-extrabold text-teal-700">₹{fmt(totalPayable)}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(260px,360px)] gap-5 items-center">
+            <div className="flex items-center gap-4">
+              <svg viewBox="0 0 36 36" className="w-20 h-20 shrink-0 -rotate-90">
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e2e8f0" strokeWidth="4" />
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#0d9488" strokeWidth="4"
+                  strokeDasharray={`${principalPct} ${100 - principalPct}`} strokeLinecap="round" />
+                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" strokeWidth="4"
+                  strokeDasharray={`${100 - principalPct} ${principalPct}`}
+                  strokeDashoffset={`-${principalPct}`} strokeLinecap="round" />
+              </svg>
+              <div className="space-y-2 text-xs flex-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-teal-500" /><span className="text-gray-500">Principal</span></div>
+                  <span className="font-bold text-gray-700">₹{fmt(amount)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-amber-400" /><span className="text-gray-500">Interest</span></div>
+                  <span className="font-bold text-gray-700">₹{fmt(totalInterest)}</span>
+                </div>
+                <div className="border-t border-gray-100 pt-2 flex items-center justify-between">
+                  <span className="text-gray-500">Total</span>
+                  <span className="font-extrabold text-teal-700">₹{fmt(totalPayable)}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Quick presets */}
-          <div>
-            <p className="text-xs text-gray-400 font-medium mb-2">Quick Select Amount</p>
-            <div className="grid grid-cols-3 gap-1.5">
-              {['1,00,000','3,00,000','5,00,000','10,00,000','20,00,000','50,00,000'].map(a => (
-                <button key={a}
-                  onClick={() => setCalcState(prev => ({ ...prev, amount: LOAN_AMOUNT_MAP[a] }))}
-                  className={`text-xs py-1.5 rounded-lg font-semibold transition-all ${amount === LOAN_AMOUNT_MAP[a] ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-teal-700'}`}>
-                  ₹{a}
-                </button>
-              ))}
+            {/* Quick presets */}
+            <div>
+              <p className="text-xs text-gray-400 font-medium mb-2">Quick Select Amount</p>
+              <div className="grid grid-cols-2 min-[420px]:grid-cols-3 gap-1.5">
+                {['1,00,000','3,00,000','5,00,000','10,00,000','20,00,000','50,00,000'].map(a => (
+                  <button key={a}
+                    onClick={() => setCalcState(prev => ({ ...prev, amount: LOAN_AMOUNT_MAP[a] }))}
+                    className={`text-xs py-1.5 rounded-lg font-semibold transition-all ${amount === LOAN_AMOUNT_MAP[a] ? 'bg-teal-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-teal-700'}`}>
+                    ₹{a}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
